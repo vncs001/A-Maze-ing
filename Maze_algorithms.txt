@@ -1,0 +1,8 @@
+DFS(Depth First Search)
+
+1.Grid full of walls
+2.Select a random unvisited neigbor
+3.Go to the selected cell
+4.Mark it visited and remove wall
+5.If there is no unvisited cell we backtrack to previous cell
+6.Repeat until every cell is visited 
