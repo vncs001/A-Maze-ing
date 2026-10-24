@@ -12,7 +12,7 @@ class ConfigTxt():
 
     def parser(self, file: str):
         return True
-    
+
     def f_confing(self, file: str) -> None:
         content: list
         param: dict = {
