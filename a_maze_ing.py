@@ -1,6 +1,7 @@
 #!python3
 import sys
 
+
 # Validar se o config.txt esta com tudo em ordem
 def parser(file: str) -> dict:
     config: dict = []
@@ -12,11 +13,10 @@ def parser(file: str) -> dict:
         "OUTPUT_FILE": 0,
         "PERFECT": 0
     }
-    #lendo a config file
     with open(file, "r") as fl: 
         for line in fl:
             config.append(line.split("="))
-    #verificando se ela corresponde ao pedido
+
     for key in out_config:
         valid: bool = False
 

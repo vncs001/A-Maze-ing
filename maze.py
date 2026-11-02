@@ -23,6 +23,7 @@ class ConfigTxt():
         if (self.parser(file)):
             try:
                 with open(file, "r") as fl:
+
                     for line in fl:
                         content = line.strip().split("=")
                         if (content[0] in ["ENTRY", "EXIT"]):
@@ -30,10 +31,13 @@ class ConfigTxt():
                             param[content[0]] = (int(temp[0]), int(temp[1]))
                         else:
                             param[content[0]] = content[1]
+
             except Exception:
                 print("Invalid configuration file")
+
         else:
-            print("Nothing happens")        
+            print("Nothing happens")
+   
         print(param)
         self.config_dinit(param)
     

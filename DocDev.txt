@@ -8,7 +8,7 @@
 ==================== { BRANCHS } ====================
             branchs ativas:
                 - main
-                - 
+                - maze_generator (vini)
 ===================== { Notas } =====================
     - Generation logic can be reused
 
