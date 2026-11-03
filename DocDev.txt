@@ -21,6 +21,12 @@
 
     - Pesquisar algoritmos de maze generator
 
+# self._wall: dict = {
+#         "Nort": Wall(self._cord, self._neighbors["Nort"]),
+#         "South": Wall(self._cord, self._neighbors["South"]),
+#         "East": Wall(self._cord, self._neighbors["East"]),
+#         "West": Wall(self._cord, self._neighbors["West"])
+#     }
 =================== { Requisitos } ====================
 
     - Configuration file

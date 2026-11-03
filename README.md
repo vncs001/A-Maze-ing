@@ -9,9 +9,11 @@
     -> primeira celula escolhe uma parede da celula para quebrar e entrar no vizinho
     -> Continua ate entrar em uma celua sem vizinhos
     -> Quando chegar na sem vizinhos, volta uma celula pra tras e procura outra direcao
+
     PASSOS:
         -> montar uma matriz fechada
         -> classe celula deve guardar oq tem ao entorno, quais ja foram quebradas e se ja foi vizitada antes
+
     CELULA:
           N
         +---+       Deve ter as 4 direcoes e oq tem na outra direcao
@@ -19,13 +21,18 @@
         +---+       elas devem ter uma relacao, essa relacao e a parede, podendo
           S         estar quebrada ou inteira
 
-    MATRIZ:
-        +---+---+---+---+
-        |   |   |   |   |
-        +---+---+---+---+
-        |   |   |   |   |
-        +---+---+---+---+
-        |   |   |   |   |
-        +---+---+---+---+
-        |   |   |   |   |
-        +---+---+---+---+
+    MATRIZ (6x6):
+        
+        +---+---+---+---+---+---+  x|__
+ (0,0)->|   |   |   |   |   |   |    y 
+        +---+---+---+---+---+---+
+        |   |   |   |   |   |   |
+        +---+---+---+---+---+---+
+        |   |   |   |   |   |   |
+        +---+---+---+---+---+---+
+        |   |   |   |   |   |   |
+        +---+---+---+---+---+---+
+        |   |   |   |   |   |   |
+        +---+---+---+---+---+---+
+        |   |   |   |   |   |   |->(6,6)
+        +---+---+---+---+---+---+

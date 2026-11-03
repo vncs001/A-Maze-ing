@@ -1,6 +1,96 @@
 from abc import abstractmethod, ABC
 
 
+# Parede e uma fronte entre cellOne e cellTwo, podendo estar de pe ou nao
+class Wall():
+    def __init__(
+            self,
+            cellOne: tuple[int, int],
+            cellTwo: tuple[int, int]
+            ):
+        self._cellOne: tuple[int, int] = cellOne
+        self._cellTwo: tuple[int, int] = cellTwo
+        self._up: bool = True
+
+    def break_wall(self):
+        self._up = False
+
+    def regenerate(self):
+        self._up = True
+
+
+class Cell():
+    def __init__(
+            self, x: int, y: int
+            ):
+        self._visited: bool = False
+        self._populed: bool = False
+        self._cord: tuple[int, int] = (x, y)
+        self._neighbors = {
+            "Nort": (x, y - 1),
+            "South": (x, y + 1),
+            "East": (x + 1, y),
+            "West": (x - 1, y)
+        }
+        self._wall: dict = {
+            "Nort": True,
+            "South": True,
+            "East": True,
+            "West": True
+        }
+
+    def break_wall(self, cordenate: str):
+        self._wall[cordenate] = False
+
+    def getting_in(self, cordenate: str):
+        self._populed = True
+        if self._wall[cordenate] == True:
+            self.break_wall(cordenate)
+        if self._visited == False:
+            self._visited = True
+
+    def getting_out(self, cordenate: str):
+        self._populed = False
+        if self._wall[cordenate] == True:
+            self.break_wall(cordenate)
+
+
+#        x=0     x=1     x=2     x=3
+#     ┌───────┬───────┬───────┬───────┐
+# y=0 │ (0,0) │ (1,0) │ (2,0) │ (3,0) │
+#     ├───────┼───────┼───────┼───────┤
+# y=1 │ (0,1) │ (1,1) │ (2,1) │ (3,1) │
+#     ├───────┼───────┼───────┼───────┤
+# y=2 │ (0,2) │ (1,2) │ (2,2) │ (3,2) │
+#     ├───────┼───────┼───────┼───────┤
+# y=3 │ (0,3) │ (1,3) │ (2,3) │ (3,3) │
+#     └───────┴───────┴───────┴───────┘
+class Matrix():
+    def __init__(self,
+                width: int, # x
+                height: int # y
+                ):
+        self._width: int = width
+        self._height: int = height
+        self._cells: list[list[Cell]] = []
+        self._walls: list[list[Wall]] = []
+
+    def populate_cells(self):
+        for y in range(self._height):
+            row = []
+            for x in range(self._width):
+                row.append(Cell(x, y))
+        self._cells.append(row)
+
+    def frontier(self):
+        #percorrer self._cells para calcular as paredess
+        for y in range(self._height):
+            row = []
+            for x in range(self._width):
+                # Criar Wall para East, se existir vizinho
+                
+                # Criar Wall para South, se existir vizinho
+
 class ConfigTxt():
     def __init__(self):
         self.width: int = 0
@@ -50,21 +140,6 @@ class ConfigTxt():
         self.perfect = param["PERFECT"]        
 
 
-class Wall():
-    def __init__(self):
-        self.north: int = 0
-        self.east: int = 0
-        self.south: int = 0
-        self.west: int = 0
-
-
-class Cell():
-    def __init__(self):
-        self.x: int = 0
-        self.y: int = 0
-        self.wall: Wall = Wall()
-
-
 class HexaMatrix():
     def string_wall(self, w: Wall) -> str:
         res: str = ""
@@ -82,77 +157,67 @@ class HexaMatrix():
         return d_hexa[binary]
 
 
-class Maze(ABC):
-    def __init__(self):
-        self.entry: Cell
-        self.exit: Cell
-        self.height: int
-        self.width: int
+# class Maze(ABC):
+#     def __init__(self):
+#         self.entry: Cell
+#         self.exit: Cell
+#         self.height: int
+#         self.width: int
     
-    def config_maze(self, config_file: str):
-        conf = ConfigTxt()
-        conf.f_confing(config_file)
-        self.entry = conf.entry
-        self.exit = conf.exit
-        self.height = conf.height
-        self.width = conf.width
+#     def config_maze(self, config_file: str):
+#         conf = ConfigTxt()
+#         conf.f_confing(config_file)
+#         self.entry = conf.entry
+#         self.exit = conf.exit
+#         self.height = conf.height
+#         self.width = conf.width
 
-    def cell(self):
-        cl: Cell = Cell()
-        return cl
+#     def cell(self):
+#         cl: Cell = Cell()
+#         return cl
 
-    def fill_maze(self) -> list[Cell]:
-        maze: list[Cell] = []
-        for i in range(0, self.width):
-            for j in range(0, self.height):
-                temp = self.cell()
-                temp.x = i
-                temp.y = j
-                if j == 3:
-                    temp.wall.north = 1
-                    temp.wall.east = 1
-                    temp.wall.south = 0
-                elif j == 1:
-                    temp.wall.north = 1
-                    temp.wall.west = 0
-                    temp.wall.south = 1
-                else:
-                    temp.wall.north = 0
-                    temp.wall.west = 1
-                    temp.wall.east = 1
-                maze.append(temp)
-        return maze
+#     def fill_maze(self) -> list[Cell]:
+#         maze: list[Cell] = []
+#         for i in range(0, self.width):
+#             for j in range(0, self.height):
+#                 temp = self.cell()
+#                 temp.x = i
+#                 temp.y = j
+#                 if j == 3:
+#                     temp.wall.north = 1
+#                     temp.wall.east = 1
+#                     temp.wall.south = 0
+#                 elif j == 1:
+#                     temp.wall.north = 1
+#                     temp.wall.west = 0
+#                     temp.wall.south = 1
+#                 else:
+#                     temp.wall.north = 0
+#                     temp.wall.west = 1
+#                     temp.wall.east = 1
+#                 maze.append(temp)
+#         return maze
     
-    def hexa_matrix(self, maze: list[Cell], file: str):
-        hx = HexaMatrix()
-        br_line = 0
-        with open(file, "w") as fl:
-            for cl in maze:
-                fl.write(str(hx.binary_to_hexa(hx.string_wall(cl.wall))))
-                if (br_line == (self.width - 1)):
-                    fl.write("\n")
-                    br_line = 0
-                else:    
-                    br_line += 1
+    # def hexa_matrix(self, maze: list[Cell], file: str):
+    #     hx = HexaMatrix()
+    #     br_line = 0
+    #     with open(file, "w") as fl:
+    #         for cl in maze:
+    #             fl.write(str(hx.binary_to_hexa(hx.string_wall(cl.wall))))
+    #             if (br_line == (self.width - 1)):
+    #                 fl.write("\n")
+    #                 br_line = 0
+    #             else:    
+    #                 br_line += 1
 
-    @abstractmethod
-    def generate_maze(self):
-        pass    
-
-
-class ImperfectMaze(Maze):
-    def generate_maze(self):
-        pass
+    # @abstractmethod
+    # def generate_maze(self):
+    #     pass    
 
 
-class PerfectMaze(Maze):
-    def generate_maze(self):
-        pass
-
-
-mz = PerfectMaze()
-"""mz.height = 4
-mz.width = 37"""
-mz.config_maze("config.txt")
-maz = mz.fill_maze()
-mz.hexa_matrix(maz, "ty.txt")
+# mz = PerfectMaze()
+# """mz.height = 4
+# mz.width = 37"""
+# mz.config_maze("config.txt")
+# maz = mz.fill_maze()
+# mz.hexa_matrix(maz, "ty.txt")
