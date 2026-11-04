@@ -17,9 +17,27 @@
     - Deve rotar com o comando: 
         python3 a_maze_ing.py config.txt
 
-    - Tabalhar com matriz e vetores
+printador de paredes:
+# self._walls = []
+# for y in range(self._height):
+#     row_y = 0
 
-    - Pesquisar algoritmos de maze generator
+#     for x in range(self._width):
+#         cell = self._cells[y][x]
+#         # print(cell._cord, end="")
+
+#         if x + 1 < self._width:
+#             print(" |", end="")
+
+#         if y + 1 < self._height:
+#             row_y += 1
+
+#     print("\n")
+#     # print(" ", end="")
+#     for _ in range(row_y):
+#         print("-", end="")
+#         print(" ", end="")
+#     print("\n")
 
 # self._wall: dict = {
 #         "Nort": Wall(self._cord, self._neighbors["Nort"]),
