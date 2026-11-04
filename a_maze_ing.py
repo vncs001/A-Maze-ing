@@ -43,18 +43,19 @@ def parser(file: str) -> dict:
 if __name__ == "__main__":
     print("-_-_- Starting -_-_-\n")
     try:
-        # if len(sys.argv) != 2 or not sys.argv[1].endswith(".txt"):
-        #     raise ValueError("Invalid input, usage: "
-        #                      "python3 a_maze_ing.py config.txt")
+        #DEBUG, comente esse if
+        if len(sys.argv) != 2 or not sys.argv[1].endswith(".txt"):
+            raise ValueError("Invalid input, usage: "
+                             "python3 a_maze_ing.py config.txt")
 
-        config = parser("config.txt")# "config.txt" ou sys.argv[1]
+        config = parser(sys.argv[1])#DEBUG: "config.txt" ou sys.argv[1]
         if not config:
             raise ValueError("Invalid config file")
 
-        # print(config["WIDTH"])
         matrix = Matrix(config["WIDTH"], config["HEIGHT"])
         matrix.build()
-        matrix.print_matrix()
+        print(matrix._cells[0][0]._neighbors)
+        # matrix.print_matrix()
 
     except ValueError as e:
         print(f"Error - {e}")

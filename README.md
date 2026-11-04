@@ -36,3 +36,16 @@
         +---+---+---+---+---+---+
         |   |   |   |   |   |   |->(6,6)
         +---+---+---+---+---+---+
+
+
+
+    def print_matrix(self):
+        for y in range(self._height):
+            for x in range(self._width):
+                print(self._cells[y][x]._cord, end="")
+                if x + 1 < self._width:
+                    print(self._x_walls[y][x]._rep, end="")
+            print("\n")
+            for i in range(self._width):
+                print(self._y_walls[i][x]._rep, end="")
+            print("\n")

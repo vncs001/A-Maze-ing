@@ -6,17 +6,22 @@ class Wall():
     def __init__(
             self,
             cellOne: tuple[int, int],
-            cellTwo: tuple[int, int]
+            cellTwo: tuple[int, int],
+            rep: str = " "
             ):
         self._cellOne: tuple[int, int] = cellOne
         self._cellTwo: tuple[int, int] = cellTwo
         self._up: bool = True
+        self._original_rep = rep
+        self._rep: str = f"\033[91m{rep}\033[0m"
 
     def break_wall(self):
         self._up = False
+        self._rep = self._original_rep
 
     def regenerate(self):
         self._up = True
+        self._rep = f"\033[91m{self._original_rep}\033[0m"
 
 
 class Cell():
@@ -73,23 +78,57 @@ class Matrix():
         self._width: int = width
         self._height: int = height
         self._cells: list[list[Cell]] = []
-        self._walls: list[list[Wall]] = []
+        self._x_walls: list[list[Wall]] = []
+        self._y_walls: list[list[Wall]] = []
 
     def populate_cells(self):
         for y in range(self._height):
             row = []
             for x in range(self._width):
                 row.append(Cell(x, y))
-        self._cells.append(row)
+            self._cells.append(row)
 
-    def frontier(self):
-        #percorrer self._cells para calcular as paredess
+    def frontier_walls(self):
+        self._x_walls = []
+        self._y_walls = []
+
         for y in range(self._height):
-            row = []
+            row_x = []
+            row_y = []
+
             for x in range(self._width):
-                # Criar Wall para East, se existir vizinho
-                
-                # Criar Wall para South, se existir vizinho
+                cell = self._cells[y][x]
+
+                if x + 1 < self._width:
+                    east_cell = self._cells[y][x + 1]
+                    row_x.append(Wall(cell._cord, east_cell._cord, " | "))
+
+                if y + 1 < self._height:
+                    south_cell = self._cells[y + 1][x] 
+                    row_y.append(Wall(cell, south_cell._cord, "+-----+  "))
+
+            self._x_walls.append(row_x)#
+            self._y_walls.append(row_y)
+
+    def build(self):
+        self.populate_cells()
+        self.frontier_walls()
+
+    def print_matrix(self):
+        for y in range(self._height):
+            for x in range(self._width):
+                print(self._cells[y][x]._cord, end="")
+
+                if x + 1 < self._width:
+                    print(self._x_walls[y][x]._rep, end="")
+
+            print("\n")
+
+            if y + 1 < self._height:
+                for x in range(self._width):
+                    print(self._y_walls[y][x]._rep, end="")
+            print("\n")
+
 
 class ConfigTxt():
     def __init__(self):
