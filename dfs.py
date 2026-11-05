@@ -1,5 +1,6 @@
 #!python3
 from maze import Matrix, Cell, Wall
+import random
 
 
 # Logica DFS:
@@ -28,3 +29,33 @@ class Jumper():
                 ):
         self._location: tuple[int, int] = first_cell
         self._trace: list[tuple[int, int]]
+        self._compass: dict = {
+            "Nort": (0, -1),
+            "South": (0, 1),
+            "East": (1, 0),
+            "West": (-1, 0)
+        }
+
+    def move(self, direction: str):
+        dx, dy = self._compass[direction]
+        x, y = self._location
+        self._location = (x + dx, y + dy)
+
+def dfs(entry: tuple[int, int], exit: tuple[int, int], map: Matrix):
+    x, y = entry
+    compass: dict = {
+        0: "Nort",
+        1: "South",
+        2: "East",
+        3: "West"
+    }
+
+    if not (0 <= x < map._width and 0 <= y < map._height):
+        raise ValueError("Invalid init cell")
+
+    cell = map._cells[y][x]
+    jumper = Jumper(cell._cord)
+
+    while is_border_land(jumper._location, map._height, map._width):
+        direction = random.randint(0, 3)
+        jumper.move(compass[direction])

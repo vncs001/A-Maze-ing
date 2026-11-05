@@ -54,8 +54,8 @@ if __name__ == "__main__":
 
         matrix = Matrix(config["WIDTH"], config["HEIGHT"])
         matrix.build()
-        print(matrix._cells[0][0]._neighbors)
-        # matrix.print_matrix()
+        # print(matrix._cells[0][0]._neighbors)
+        matrix.print_matrix()
 
     except ValueError as e:
         print(f"Error - {e}")
@@ -63,6 +63,9 @@ if __name__ == "__main__":
     except FileNotFoundError:
         print(f"Error - File '{sys.argv[1]}' does not exist")
         sys.exit(1)
+
+    except SyntaxError as e:
+            print(f" SyntaxError - {e}")
 
 # MATRIX TESTER
     # matrix = Matrix(6, 6)

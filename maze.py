@@ -31,12 +31,12 @@ class Cell():
         self._visited: bool = False
         self._populed: bool = False
         self._cord: tuple[int, int] = (x, y)
-        self._neighbors = {
-            "Nort": (x, y - 1),
-            "South": (x, y + 1),
-            "East": (x + 1, y),
-            "West": (x - 1, y)
-        }
+        # self._neighbors = {
+        #     "Nort": (x, y - 1),
+        #     "South": (x, y + 1),
+        #     "East": (x + 1, y),
+        #     "West": (x - 1, y)
+        # }
         self._wall: dict = {
             "Nort": True,
             "South": True,
