@@ -129,6 +129,32 @@ class Matrix():
                     print(self._y_walls[y][x]._rep, end="")
             print("\n")
 
+    def code_wall(self, wall: dict) -> str:
+        h_value: int
+        h_value = 0
+        hX_simbols = {10: "a", 11: "b", 12: "c", 13: "d", 14: "e", 15: "f"}
+        if (wall["Nort"]):
+            h_value = h_value + 1
+        if (wall["South"]):
+            h_value = h_value + 2
+        if (wall["East"]):
+            h_value = h_value + 4
+        if (wall["West"]):
+            h_value = h_value + 8
+        if h_value in [10, 11, 12, 13, 14, 15]:
+            return hX_simbols[h_value]
+        else:
+            return str(h_value)
+
+    def write_hxmatrix(self, file: str) -> None:
+        cell = self._cells
+        fl = open(file, "w")
+        for i in range(self._height):
+            for j in range(self._width):
+                fl.write(self.code_wall(cell[i][j]._wall))
+            fl.write("\n")
+        fl.close()     
+
 
 class ConfigTxt():
     def __init__(self):
@@ -179,59 +205,9 @@ class ConfigTxt():
         self.perfect = param["PERFECT"]        
 
 
-"""class HexaMatrix():
-    def string_wall(self, w: Wall) -> str:
-        res: str = ""
-        for i in [w.north, w.east, w.south, w.west]:
-            res += str(i)
-        return res
-
-    def binary_to_hexa(self, binary: str) -> str | int:
-        d_hexa = {
-           "0000": 0, "0001": 1, "0010": 2, "0011": 3, "0100": 4,
-           "0101": 5, "0110": 6, "0111": 7, "1000": 8, "1001": 9,
-           "1010": "a", "1011": "b", "1100": "c", "1101": "d",
-           "1110": "e", "1111": "f"
-        }
-        return d_hexa[binary]
-"""
-
-"""NOVA CLASSE PARA ESCEREVER A MATRIX EM HEXADECIMAL NO FICHEIRO"""
-class hexa_matrix():
-    def code_wall(self, wall: dict) -> str:
-        h_value: int
-        h_value = 0
-        hX_simbols = {10: "a", 11: "b", 12: "c", 13: "d", 14: "e", 15: "f"}
-        if (wall["Nort"]):
-            h_value = h_value + 1
-        if (wall["South"]):
-            h_value = h_value + 2
-        if (wall["East"]):
-            h_value = h_value + 4
-        if (wall["West"]):
-            h_value = h_value + 8
-        if h_value in [10, 11, 12, 13, 14, 15]:
-            return hX_simbols[h_value]
-        else:
-            return str(h_value)
-
-    def write_hxmatrix(self, matrix: Matrix, file: str) -> None:
-        cell = matrix._cells
-        fl = open(file, "w")
-        for i in range(matrix._height):
-            for j in range(matrix._width):
-                fl.write(self.code_wall(cell[i][j]._wall))
-            fl.write("\n")
-        fl.close()            
-
-
-mx = Matrix(5, 5)
+mx = Matrix(16, 10)
 mx.build()
-"""Testando a nova hexa_matrix"""
-hx = hexa_matrix()
-hx.write_hxmatrix(mx, "hx.txt")
-
-
+mx.write_hxmatrix("hx.txt")
 #mx.print_matrix()
 # class Maze(ABC):
 #     def __init__(self):
