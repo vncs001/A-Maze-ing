@@ -22,8 +22,8 @@ def is_border_land(cord: tuple[int, int], height: int, width: int) -> bool:
         return True
     return False 
 
-#Classe Jumper serve como representacao de alguem percorrendo as celulas
-class Jumper():
+#Classe explorer serve como representacao de alguem percorrendo as celulas
+class Explorer():
     def __init__(self,
                 first_cell: tuple[int, int]
                 ):
@@ -54,8 +54,8 @@ def dfs(entry: tuple[int, int], exit: tuple[int, int], map: Matrix):
         raise ValueError("Invalid init cell")
 
     cell = map._cells[y][x]
-    jumper = Jumper(cell._cord)
+    explorer = Explorer(cell._cord)
 
-    while is_border_land(jumper._location, map._height, map._width):
+    while is_border_land(explorer._location, map._height, map._width):
         direction = random.randint(0, 3)
-        jumper.move(compass[direction])
+        explorer.move(compass[direction])

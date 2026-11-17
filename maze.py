@@ -70,6 +70,7 @@ class Cell():
 #     ├───────┼───────┼───────┼───────┤
 # y=3 │ (0,3) │ (1,3) │ (2,3) │ (3,3) │
 #     └───────┴───────┴───────┴───────┘
+# Definir funcao examatrix
 class Matrix():
     def __init__(self,
                 width: int, # x
