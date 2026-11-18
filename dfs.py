@@ -32,15 +32,15 @@ def valid_directions(
     width = map._width
     neighbors = {
         "North": (x, y - 1),
-        "South": (x, y + 1),
         "East": (x + 1, y),
-        "West": (x - 1, y)
+        "South": (x, y + 1),
+        "West": (x - 1, y),
     }
 
     compass = {}
 
     for direction, (nx, ny) in neighbors.items():
-        if 0 <= nx < width and 0 <= ny < height:
+        if 0 <= nx < height and 0 <= ny < width:
             compass[direction] = not map._cells[ny][nx].visited
         else:
             compass[direction] = False
@@ -51,6 +51,16 @@ def valid_directions(
             if is_valid
     ]
     return available
+
+
+def oposite_wall(direction: str):
+    oposite = {
+        "North": "South",
+        "East": "West",
+        "South": "North",
+        "West": "East",
+    }
+    return oposite[direction]
 
 
 def dfs(entry: tuple[int, int], exit: tuple[int, int], map: Matrix):
@@ -77,11 +87,12 @@ def dfs(entry: tuple[int, int], exit: tuple[int, int], map: Matrix):
             # Depois quebrar a parede entre as células.
             map.carve_path(cell, direction)
             cell._wall[direction] = False
-            
+            nextCell._wall[oposite_wall(direction)] = False
             # Marcar vizinha como visitada.
             nextCell.visit()
             # Adicionar vizinha na pilha.
             stack.append(nextCell)
+            map.print_matrix()
             pass
 
         else:
@@ -89,25 +100,3 @@ def dfs(entry: tuple[int, int], exit: tuple[int, int], map: Matrix):
 
     map.print_matrix()
     map.write_hxmatrix("result.txt")
-    # explorer = Explorer(cell._cord)
-    # compass = valid_directions(cell._cord, map)
-    # available = [
-    #     direction
-    #     for direction, is_valid in compass.items()
-    #         if is_valid
-    # ]
-    # direction = random.choice(available)
-
-    # print(compass)
-#-----------------
-    # while not is_border_land(explorer._location, map._height, map._width):
-    #     explorer.move(compass[direction])
-    #     # querbra parede
-    #     x, y = explorer._location 
-    #     nextCell = map._cells[y][x]
-    #     map.carve_path(cell, direction)
-    #     if not cell._visited:
-    #         cell.visit()
-    #     cell = nextCell
-    #     map.print_matrix()
-

@@ -34,15 +34,15 @@ class Cell():
         self._valid: bool = True
         self._neighbors = {
             "North": (x, y - 1),
-            "South": (x, y + 1),
             "East": (x + 1, y),
-            "West": (x - 1, y)
+            "South": (x, y + 1),
+            "West": (x - 1, y),
         }
         self._wall: dict = {
             "North": True,
-            "South": True,
             "East": True,
-            "West": True
+            "South": True,
+            "West": True,
         }
 
     @property
@@ -80,6 +80,8 @@ class Cell():
 #     ├───────┼───────┼───────┼───────┤
 # y=3 │ (0,3) │ (1,3) │ (2,3) │ (3,3) │
 #     └───────┴───────┴───────┴───────┘
+# 0  1  0  0
+# W, S, E, N
 class Matrix():
     def __init__(self,
                 width: int, # x
@@ -145,9 +147,9 @@ class Matrix():
         hX_simbols = {10: "a", 11: "b", 12: "c", 13: "d", 14: "e", 15: "f"}
         if (wall["North"]):
             h_value = h_value + 1
-        if (wall["South"]):
-            h_value = h_value + 2
         if (wall["East"]):
+            h_value = h_value + 2
+        if (wall["South"]):
             h_value = h_value + 4
         if (wall["West"]):
             h_value = h_value + 8
@@ -229,7 +231,7 @@ class ConfigTxt():
 
 mx = Matrix(16, 10)
 mx.build()
-mx.write_hxmatrix("hx.txt")
+# mx.write_hxmatrix("hx.txt")
 #mx.print_matrix()
 # class Maze(ABC):
 #     def __init__(self):

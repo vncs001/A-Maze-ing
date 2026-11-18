@@ -7,9 +7,9 @@ class Explorer():
         self._trace: list[tuple[int, int]]
         self._compass: dict = {
             "North": (0, -1),
-            "South": (0, 1),
             "East": (1, 0),
-            "West": (-1, 0)
+            "South": (0, 1),
+            "West": (-1, 0),
         }
 
     def move(self, direction: str):

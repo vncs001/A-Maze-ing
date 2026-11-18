@@ -1,3 +1,4 @@
+#!python3
 import pygame
 
 
@@ -63,7 +64,7 @@ class maze_graphics():
                 x = j * self.rect_w
                 y = i * self.rect_h
                 temp: str = self.hexa_decoder(maze[count])
-                if (temp[0] == "1"):
+                if (temp[2] == "1"):
                     pygame.draw.line(self.screen, cl, (x + self.rect_w, y),
                                      (x + self.rect_w, y + self.rect_h),
                                      self.border_thickness)
@@ -71,7 +72,7 @@ class maze_graphics():
                     pygame.draw.line(self.screen, cl, (x, y + self.rect_h),
                                      (x + self.rect_w, y + self.rect_h),
                                      self.border_thickness)
-                if (temp[2] == "1"): 
+                if (temp[0] == "1"): 
                     pygame.draw.line(self.screen, cl, (x, y),
                                      (x, y + self.rect_h),
                                      self.border_thickness)
@@ -97,12 +98,12 @@ class maze_graphics():
 
 
 param = {
-     "height": 20,
-     "width": 25,
+     "height": 12,
+     "width": 12,
      "cell_w": 34,
      "cell_h": 34,
      "border": 4
      }
 
 mz = maze_graphics(param)
-mz.display_maze("ny.txt")
+mz.display_maze("result.txt")
