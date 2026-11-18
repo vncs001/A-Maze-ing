@@ -31,18 +31,25 @@ class Cell():
         self._visited: bool = False
         self._populed: bool = False
         self._cord: tuple[int, int] = (x, y)
-        # self._neighbors = {
-        #     "Nort": (x, y - 1),
-        #     "South": (x, y + 1),
-        #     "East": (x + 1, y),
-        #     "West": (x - 1, y)
-        # }
+        self._valid: bool = True
+        self._neighbors = {
+            "North": (x, y - 1),
+            "South": (x, y + 1),
+            "East": (x + 1, y),
+            "West": (x - 1, y)
+        }
         self._wall: dict = {
-            "Nort": True,
+            "North": True,
             "South": True,
             "East": True,
             "West": True
         }
+
+    @property
+    def visited(self) -> bool:
+        if not self._valid:
+            return True
+        return self._visited
 
     def break_wall(self, cordenate: str):
         self._wall[cordenate] = False
@@ -58,6 +65,9 @@ class Cell():
         self._populed = False
         if self._wall[cordenate] == True:
             self.break_wall(cordenate)
+
+    def visit(self):
+        self._visited = True
 
 
 #        x=0     x=1     x=2     x=3
@@ -133,7 +143,7 @@ class Matrix():
         h_value: int
         h_value = 0
         hX_simbols = {10: "a", 11: "b", 12: "c", 13: "d", 14: "e", 15: "f"}
-        if (wall["Nort"]):
+        if (wall["North"]):
             h_value = h_value + 1
         if (wall["South"]):
             h_value = h_value + 2
@@ -154,6 +164,18 @@ class Matrix():
                 fl.write(self.code_wall(cell[i][j]._wall))
             fl.write("\n")
         fl.close()     
+
+    def carve_path(self, cellOne: Cell, direction: int) -> None:
+        x, y = cellOne._cord
+
+        if direction == "North":
+            self._y_walls[y - 1][x].break_wall()
+        elif direction == "South":
+            self._y_walls[y][x].break_wall()
+        elif direction == "East":
+            self._x_walls[y][x].break_wall()
+        elif direction == "West":
+            self._x_walls[y][x - 1].break_wall()
 
 
 class ConfigTxt():

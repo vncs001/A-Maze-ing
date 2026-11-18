@@ -1,7 +1,12 @@
 #!python3
 from maze import Matrix, Cell, Wall
 import random
+from explorer import Explorer
 
+# ALGORITMOS PARA PROCURAR
+# 1. BFS Procurar
+# 2. Hunting and kill
+# 3. Prims
 
 # Logica DFS:
 #   Parametros = Celula inicial, Matrix montada
@@ -16,46 +21,93 @@ import random
 #   - Continue procurando vizinhos não visitados.
 # 6. Termine quando todas as células tiverem sido visitadas.
 
-def is_border_land(cord: tuple[int, int], height: int, width: int) -> bool:
+
+def valid_directions(
+        cord: tuple[int, int],
+        map: Matrix
+    ) -> list[str]:
+
     x, y = cord
-    if x < 0 or y < 0 or x > height or y > width:
-        return True
-    return False 
+    height = map._height
+    width = map._width
+    neighbors = {
+        "North": (x, y - 1),
+        "South": (x, y + 1),
+        "East": (x + 1, y),
+        "West": (x - 1, y)
+    }
 
-#Classe Jumper serve como representacao de alguem percorrendo as celulas
-class Jumper():
-    def __init__(self,
-                first_cell: tuple[int, int]
-                ):
-        self._location: tuple[int, int] = first_cell
-        self._trace: list[tuple[int, int]]
-        self._compass: dict = {
-            "Nort": (0, -1),
-            "South": (0, 1),
-            "East": (1, 0),
-            "West": (-1, 0)
-        }
+    compass = {}
 
-    def move(self, direction: str):
-        dx, dy = self._compass[direction]
-        x, y = self._location
-        self._location = (x + dx, y + dy)
+    for direction, (nx, ny) in neighbors.items():
+        if 0 <= nx < width and 0 <= ny < height:
+            compass[direction] = not map._cells[ny][nx].visited
+        else:
+            compass[direction] = False
+
+    available = [
+        direction
+        for direction, is_valid in compass.items()
+            if is_valid
+    ]
+    return available
+
 
 def dfs(entry: tuple[int, int], exit: tuple[int, int], map: Matrix):
     x, y = entry
-    compass: dict = {
-        0: "Nort",
-        1: "South",
-        2: "East",
-        3: "West"
-    }
 
     if not (0 <= x < map._width and 0 <= y < map._height):
         raise ValueError("Invalid init cell")
 
     cell = map._cells[y][x]
-    jumper = Jumper(cell._cord)
+    cell.visit()
+    stack = [cell]
 
-    while is_border_land(jumper._location, map._height, map._width):
-        direction = random.randint(0, 3)
-        jumper.move(compass[direction])
+    while stack:
+        cell = stack[-1]
+        available = valid_directions(cell._cord, map)
+
+        if available:
+
+            direction = random.choice(available)
+
+            # Aqui você precisará obter a célula vizinha.
+            x, y = cell._neighbors[direction] 
+            nextCell = map._cells[y][x]
+            # Depois quebrar a parede entre as células.
+            map.carve_path(cell, direction)
+            cell._wall[direction] = False
+            
+            # Marcar vizinha como visitada.
+            nextCell.visit()
+            # Adicionar vizinha na pilha.
+            stack.append(nextCell)
+            pass
+
+        else:
+            stack.pop()
+
+    map.print_matrix()
+    map.write_hxmatrix("result.txt")
+    # explorer = Explorer(cell._cord)
+    # compass = valid_directions(cell._cord, map)
+    # available = [
+    #     direction
+    #     for direction, is_valid in compass.items()
+    #         if is_valid
+    # ]
+    # direction = random.choice(available)
+
+    # print(compass)
+#-----------------
+    # while not is_border_land(explorer._location, map._height, map._width):
+    #     explorer.move(compass[direction])
+    #     # querbra parede
+    #     x, y = explorer._location 
+    #     nextCell = map._cells[y][x]
+    #     map.carve_path(cell, direction)
+    #     if not cell._visited:
+    #         cell.visit()
+    #     cell = nextCell
+    #     map.print_matrix()
+
