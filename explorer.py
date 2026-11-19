@@ -5,6 +5,7 @@ class Explorer():
                 ):
         self._location: tuple[int, int] = first_cell
         self._trace: list[tuple[int, int]]
+        self._steps: int
         self._compass: dict = {
             "North": (0, -1),
             "East": (1, 0),
