@@ -2,6 +2,7 @@
 import sys
 from maze import Cell, Matrix
 from dfs import dfs
+from bfs import bfs
 
 # ALGORITMOS PARA PROCURAR
 # 1. BFS Procurar
@@ -62,6 +63,7 @@ if __name__ == "__main__":
 
         if config["PERFECT"]:
             dfs(config["ENTRY"], matrix)
+            bfs(config["ENTRY"], config["EXIT"], matrix)
 
     except ValueError as e:
         print(f"Error - {e}")

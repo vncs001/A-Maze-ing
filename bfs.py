@@ -11,14 +11,14 @@ import random
 #       [x] Identificar Entry e Exit (coordenadas (x, y)).
 #       [x] Criar a fila (deque) contendo só a Entry.
 #       [x] Criar visited (set) contendo só a Entry.
-#       [ ] Criar came_from vazio (dict: célula -> (célula_anterior, direção)).
+#       [x] Criar came_from vazio (dict: célula -> (célula_anterior, direção)).
 #    2. Exploração
 #    Enquanto a fila não estiver vazia:
-#       [ ] Tirar a célula da FRENTE da fila (popleft).
-#       [ ] Se ela for a Exit, parar o laço.
+#       [x] Tirar a célula da FRENTE da fila (popleft).
+#       [x] Se ela for a Exit, parar o laço.
 #       [ ] Para cada direção (North, East, South, West):
-#           [ ] Calcular o vizinho (nx, ny).
-#           [ ] Pular se estiver fora do grid.
+#           [x] Calcular o vizinho (nx, ny).
+#           [x] Pular se estiver fora do grid.
 #           [ ] Pular se houver parede nessa direção.
 #           [ ] Pular se o vizinho já estiver em visited.
 #           [ ] Marcar o vizinho em visited.
@@ -34,7 +34,8 @@ import random
 #       [ ] Testar num 3x3 à mão: o caminho tem o tamanho esperado?
 #       [ ] Andar o caminho a partir da Entry e conferir que nenhum passo
 #           atravessa parede e que termina na Exit.
- 
+
+
 def valid_directions(
         cord: tuple[int, int],
         map: Matrix
@@ -53,8 +54,8 @@ def valid_directions(
     compass = {}
 
     for direction, (nx, ny) in neighbors.items():
-        if 0 <= nx < height and 0 <= ny < width:
-            compass[direction] = not map._cells[y][x].way and not map._cells[ny][nx].valid #verifica se existe passagem pela direcao
+        if (0 <= nx < height and 0 <= ny < width) and (not map._cells[ny][nx].valid):
+            compass[direction] = map._cells[ny][nx].has_wall(direction) #verifica se existe passagem pela direcao
         else:
             compass[direction] = False
 
@@ -83,7 +84,7 @@ def take_neighbor(cell: Cell, direction: str, map: Matrix):
             return cell._neighbors[direction]
 
 
-def bfs(entry: tuple[int, int], map: Matrix):
+def bfs(entry: tuple[int, int], exit: tuple[int, int], map: Matrix):
     x, y = entry
 
     if not (0 <= x < map._width and 0 <= y < map._height):
@@ -95,14 +96,17 @@ def bfs(entry: tuple[int, int], map: Matrix):
     came_from = {}
 
     while queue:
-        cell = queue.pop()
-        availables = valid_directions(cell._cord, map)
+        cell = queue.popleft()
 
+        if cell._cord == exit:
+            break
+
+        availables = valid_directions(cell._cord, map)
         if availables:
             for available in availables:
-                x, y = cell._neighbors[available]
-                
-                came_from[map._cells[y][x]] = cell
+                nx, ny = cell._neighbors[available]
+
+                came_from[map._cells[ny][nx]] = cell
 
             nextCell = map._cells[y][x]
             queue.append(nextCell)

@@ -46,13 +46,16 @@ class Cell():
         }
 
     @property
-    def valid(self) -> bool:
+    def visited(self) -> bool:
         if not self._valid:
             return True
         return self._visited
-
+    
     @property
-    def way(self, direction: str) -> bool:
+    def valid(self) -> bool:
+        return self._valid
+
+    def has_wall(self, direction: str) -> bool:
         return self._wall[direction]
 
     def break_wall(self, cordenate: str):

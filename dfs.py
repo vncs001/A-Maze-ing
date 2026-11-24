@@ -34,7 +34,7 @@ def valid_directions(
 
     for direction, (nx, ny) in neighbors.items():
         if 0 <= nx < height and 0 <= ny < width:
-            compass[direction] = not map._cells[ny][nx].valid
+            compass[direction] = not map._cells[ny][nx].visited
         else:
             compass[direction] = False
 
