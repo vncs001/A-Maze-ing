@@ -31,18 +31,25 @@ class Cell():
         self._visited: bool = False
         self._populed: bool = False
         self._cord: tuple[int, int] = (x, y)
-        # self._neighbors = {
-        #     "Nort": (x, y - 1),
-        #     "South": (x, y + 1),
-        #     "East": (x + 1, y),
-        #     "West": (x - 1, y)
-        # }
-        self._wall: dict = {
-            "Nort": True,
-            "South": True,
-            "East": True,
-            "West": True
+        self._valid: bool = True
+        self._neighbors = {
+            "North": (x, y - 1),
+            "East": (x + 1, y),
+            "South": (x, y + 1),
+            "West": (x - 1, y),
         }
+        self._wall: dict = {
+            "North": True,
+            "East": True,
+            "South": True,
+            "West": True,
+        }
+
+    @property
+    def visited(self) -> bool:
+        if not self._valid:
+            return True
+        return self._visited
 
     def break_wall(self, cordenate: str):
         self._wall[cordenate] = False
@@ -59,6 +66,9 @@ class Cell():
         if self._wall[cordenate] == True:
             self.break_wall(cordenate)
 
+    def visit(self):
+        self._visited = True
+
 
 #        x=0     x=1     x=2     x=3
 #     ┌───────┬───────┬───────┬───────┐
@@ -70,7 +80,8 @@ class Cell():
 #     ├───────┼───────┼───────┼───────┤
 # y=3 │ (0,3) │ (1,3) │ (2,3) │ (3,3) │
 #     └───────┴───────┴───────┴───────┘
-# Definir funcao examatrix
+# 0  1  0  0
+# W, S, E, N
 class Matrix():
     def __init__(self,
                 width: int, # x
@@ -134,11 +145,11 @@ class Matrix():
         h_value: int
         h_value = 0
         hX_simbols = {10: "a", 11: "b", 12: "c", 13: "d", 14: "e", 15: "f"}
-        if (wall["Nort"]):
+        if (wall["North"]):
             h_value = h_value + 1
-        if (wall["South"]):
-            h_value = h_value + 2
         if (wall["East"]):
+            h_value = h_value + 2
+        if (wall["South"]):
             h_value = h_value + 4
         if (wall["West"]):
             h_value = h_value + 8
@@ -155,6 +166,18 @@ class Matrix():
                 fl.write(self.code_wall(cell[i][j]._wall))
             fl.write("\n")
         fl.close()     
+
+    def carve_path(self, cellOne: Cell, direction: int) -> None:
+        x, y = cellOne._cord
+
+        if direction == "North":
+            self._y_walls[y - 1][x].break_wall()
+        elif direction == "South":
+            self._y_walls[y][x].break_wall()
+        elif direction == "East":
+            self._x_walls[y][x].break_wall()
+        elif direction == "West":
+            self._x_walls[y][x - 1].break_wall()
 
 
 class ConfigTxt():
@@ -208,7 +231,7 @@ class ConfigTxt():
 
 mx = Matrix(16, 10)
 mx.build()
-mx.write_hxmatrix("hx.txt")
+# mx.write_hxmatrix("hx.txt")
 #mx.print_matrix()
 # class Maze(ABC):
 #     def __init__(self):

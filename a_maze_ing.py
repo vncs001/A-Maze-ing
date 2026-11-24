@@ -1,6 +1,7 @@
 #!python3
 import sys
 from maze import Cell, Matrix
+from dfs import dfs
 
 
 # Validar se o config.txt esta com tudo em ordem
@@ -44,18 +45,19 @@ if __name__ == "__main__":
     print("-_-_- Starting -_-_-\n")
     try:
         #DEBUG, comente esse if
-        if len(sys.argv) != 2 or not sys.argv[1].endswith(".txt"):
-            raise ValueError("Invalid input, usage: "
-                             "python3 a_maze_ing.py config.txt")
+        # if len(sys.argv) != 2 or not sys.argv[1].endswith(".txt"):
+        #     raise ValueError("Invalid input, usage: "
+        #                      "python3 a_maze_ing.py config.txt")
 
-        config = parser(sys.argv[1])#DEBUG: "config.txt" ou sys.argv[1]
+        config = parser("config.txt")#DEBUG: "config.txt" ou sys.argv[1]
         if not config:
             raise ValueError("Invalid config file")
 
         matrix = Matrix(config["WIDTH"], config["HEIGHT"])
         matrix.build()
         # print(matrix._cells[0][0]._neighbors)
-        matrix.print_matrix()
+        # matrix._x_walls[3][0].break_wall()
+        dfs(config["ENTRY"], config["EXIT"], matrix)
 
     except ValueError as e:
         print(f"Error - {e}")
