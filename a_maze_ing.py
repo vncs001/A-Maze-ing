@@ -3,6 +3,10 @@ import sys
 from maze import Cell, Matrix
 from dfs import dfs
 
+# ALGORITMOS PARA PROCURAR
+# 1. BFS Procurar
+# 2. Hunting and kill
+# 3. Prims
 
 # Validar se o config.txt esta com tudo em ordem
 def parser(file: str) -> dict:
@@ -55,9 +59,9 @@ if __name__ == "__main__":
 
         matrix = Matrix(config["WIDTH"], config["HEIGHT"])
         matrix.build()
-        # print(matrix._cells[0][0]._neighbors)
-        # matrix._x_walls[3][0].break_wall()
-        dfs(config["ENTRY"], config["EXIT"], matrix)
+
+        if config["PERFECT"]:
+            dfs(config["ENTRY"], matrix)
 
     except ValueError as e:
         print(f"Error - {e}")

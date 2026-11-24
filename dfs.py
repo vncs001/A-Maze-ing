@@ -1,15 +1,8 @@
 #!python3
-from maze import Matrix, Cell, Wall
+from maze import Matrix
 import random
-from explorer import Explorer
-
-# ALGORITMOS PARA PROCURAR
-# 1. BFS Procurar
-# 2. Hunting and kill
-# 3. Prims
 
 # Logica DFS:
-#   Parametros = Celula inicial, Matrix montada
 # 1. Escolha uma célula inicial e marque como visitada.
 # 2. Observe os quatro vizinhos (Norte, Sul, Leste e Oeste).
 # 3. Filtre os vizinhos que ainda não foram visitados.
@@ -41,7 +34,7 @@ def valid_directions(
 
     for direction, (nx, ny) in neighbors.items():
         if 0 <= nx < height and 0 <= ny < width:
-            compass[direction] = not map._cells[ny][nx].visited
+            compass[direction] = not map._cells[ny][nx].valid
         else:
             compass[direction] = False
 
@@ -63,7 +56,7 @@ def oposite_wall(direction: str):
     return oposite[direction]
 
 
-def dfs(entry: tuple[int, int], exit: tuple[int, int], map: Matrix):
+def dfs(entry: tuple[int, int], map: Matrix):
     x, y = entry
 
     if not (0 <= x < map._width and 0 <= y < map._height):
