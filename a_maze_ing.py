@@ -75,16 +75,3 @@ if __name__ == "__main__":
     except SyntaxError as e:
             print(f" SyntaxError - {e}")
 
-# MATRIX TESTER
-    matrix = Matrix(6, 6)
-    matrix.build()
-    matrix.print_matrix()
-    # Quebra uma parede
-    matrix._x_walls[0][4].break_wall()
-    print("==================================\n")
-    matrix.print_matrix()
-    # Reconstrói a parede e quebra uma a abaixo
-    matrix._x_walls[0][4].regenerate()
-    matrix._y_walls[0][4].break_wall()
-    print("==================================\n")
-    matrix.print_matrix()
