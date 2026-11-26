@@ -78,7 +78,7 @@ def find_the_way(came_from: dict[tuple[int, int],
     return path
 
 
-def bfs(entry: tuple[int, int], exit: tuple[int, int], map: Matrix):
+def bfs(entry: tuple[int, int], exit: tuple[int, int], map: Matrix) -> list[tuple[int, int]]:
     x, y = entry
     ex, ey = exit
     if not (0 <= x < map._width and 0 <= y < map._height):

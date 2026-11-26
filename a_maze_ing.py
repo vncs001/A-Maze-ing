@@ -45,7 +45,6 @@ def parser(file: str) -> dict:
 
     return out_config
 
-
 if __name__ == "__main__":
     print("-_-_- Starting -_-_-\n")
     try:
@@ -63,7 +62,9 @@ if __name__ == "__main__":
 
         if config["PERFECT"]:
             dfs(config["ENTRY"], matrix)
-            bfs(config["ENTRY"], config["EXIT"], matrix)
+            way: list[tuple[int, int]] = bfs(config["ENTRY"], config["EXIT"], matrix)
+        matrix.print_matrix()
+
 
     except ValueError as e:
         print(f"Error - {e}")

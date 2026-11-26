@@ -1,5 +1,13 @@
 from abc import abstractmethod, ABC
+import sys
 
+PATTERN_42 = [
+                "#...###",
+                "#.#...#",
+                "###.###",
+                "..#.#..",
+                "..#.###",
+            ]
 
 # Parede e uma fronte entre cellOne e cellTwo, podendo estar de pe ou nao
 class Wall():
@@ -76,6 +84,9 @@ class Cell():
     def visit(self):
         self._visited = True
 
+    def invalid(self) -> None:
+        self._valid = False
+
 
 #        x=0     x=1     x=2     x=3
 #     ┌───────┬───────┬───────┬───────┐
@@ -100,14 +111,30 @@ class Matrix():
         self._x_walls: list[list[Wall]] = []
         self._y_walls: list[list[Wall]] = []
 
-    def populate_cells(self):
+    @property
+    def size(self) -> tuple[int, int]:
+        return self._width, self._height
+
+    def _draw_42(self) -> None:
+        width, height = self.size
+        if height < 7 or width< 10:
+            sys.stdout.error("The maze is too small to draw th 42")
+            return
+        start_x = (width - 7) // 2
+        start_y = (height - 5) // 2
+        for dy, row in enumerate(PATTERN_42):
+            for dx, char in enumerate(row):
+                if char == "#":
+                    self._cells[start_y + dy][start_x + dx].invalid()
+
+    def populate_cells(self) -> None:
         for y in range(self._height):
             row = []
             for x in range(self._width):
                 row.append(Cell(x, y))
             self._cells.append(row)
 
-    def frontier_walls(self):
+    def frontier_walls(self) -> None:
         self._x_walls = []
         self._y_walls = []
 
@@ -129,14 +156,18 @@ class Matrix():
             self._x_walls.append(row_x)#
             self._y_walls.append(row_y)
 
-    def build(self):
+    def build(self) -> None:
         self.populate_cells()
         self.frontier_walls()
+        self._draw_42()
 
-    def print_matrix(self):
+    def print_matrix(self) -> None:
         for y in range(self._height):
             for x in range(self._width):
-                print(self._cells[y][x]._cord, end="")
+                if self._cells[y][x].valid:
+                    print(self._cells[y][x]._cord, end="")
+                else:
+                    print(f"\033[91m{self._cells[y][x]._cord}\033[0m", end="")
 
                 if x + 1 < self._width:
                     print(self._x_walls[y][x]._rep, end="")

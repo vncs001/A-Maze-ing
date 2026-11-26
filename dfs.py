@@ -56,7 +56,7 @@ def oposite_wall(direction: str):
     return oposite[direction]
 
 
-def dfs(entry: tuple[int, int], map: Matrix):
+def dfs(entry: tuple[int, int], map: Matrix) -> None:
     x, y = entry
 
     if not (0 <= x < map._width and 0 <= y < map._height):
@@ -91,5 +91,4 @@ def dfs(entry: tuple[int, int], map: Matrix):
         else:
             stack.pop()
 
-    map.print_matrix()
     map.write_hxmatrix("result.txt")
